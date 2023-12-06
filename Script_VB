@@ -1,0 +1,70 @@
+Option Explicit
+Sub ImportText()
+
+    Dim fileToOpen As Variant
+    Dim fileFilterPattern As String
+    Dim wsMaster As Worksheet
+    Dim wbTextImport As Workbook
+    Dim chris_cell As Range
+   
+    Application.ScreenUpdating = False
+    
+    
+    fileFilterPattern = "Text Files (*.txt; *.csv),*.txt;*.csv"
+    
+    
+    fileToOpen = Application.GetOpenFilename(fileFilterPattern)
+    
+    If fileToOpen = False Then
+        
+        MsgBox "No file selected."
+    Else
+        
+        Workbooks.OpenText _
+            Filename:=fileToOpen, _
+            StartRow:=1, _
+            DataType:=xlDelimited, _
+            Other:=True, _
+            OtherChar:="|"
+                
+       
+        Set wbTextImport = ActiveWorkbook
+        
+        
+        Set wsMaster = ThisWorkbook.Worksheets("Data")
+        
+       
+        wbTextImport.Worksheets(1).Range("A1").CurrentRegion.Copy wsMaster.Range("A5")
+        
+        
+        wbTextImport.Close False
+        
+        
+    End If
+
+
+    
+    Application.ScreenUpdating = True
+    MsgBox "File Reading Completed."
+    'copying specific columns
+    Sheets("Data").Columns("I").Copy
+    Sheets("Report").Columns("A").Insert
+    
+    Sheets("Data").Columns("U").Copy
+    Sheets("Report").Columns("B").Insert
+    
+    Sheets("Data").Columns("O").Copy
+    Sheets("Report").Columns("C").Insert
+    
+    Sheets("Data").Columns("V").Copy
+    Sheets("Report").Columns("D").Insert
+    
+    Sheets("Data").Columns("X").Copy
+    Sheets("Report").Columns("E").Insert
+    
+    Sheets("Data").Columns("F").Copy
+    Sheets("Report").Columns("F").Insert
+    MsgBox "Copying Completed!"
+
+End Sub
+
